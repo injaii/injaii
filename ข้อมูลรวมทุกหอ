@@ -1,0 +1,254 @@
+var CHANNEL_ACCESS_TOKEN = 'mUGfaqX2TNLhMMWOjGG2O1UKPfAd1tiPqF5Ky8WOeD4fiY5ALi9lBxe69IiNm+DyQuk37U/t9wCMF0PmlgkcCKXHDPMLrsOBBhxBZLAOdkdpvzQnOSXSqrzvx/e3+Ah23HbJdAraJF4rcgOlPYVr0gdB04t89/1O/w1cDnyilFU=';
+var line_endpoint = 'https://api.line.me/v2/bot/message/reply';
+
+function doGet(request) {
+  return ContentService.createTextOutput(JSON.stringify({
+    post: "ok"
+  })).setMimeType(ContentService.MimeType.JSON);
+}
+var ws = SpreadsheetApp.openById('1g4vn1K9bD3q8V32lliKIdNKouoWxWII5rJNh9toAjmU')
+var sheet = ws.getSheetByName("ชีต1");
+var data = sheet.getRange(2, 1, sheet.getLastRow(), sheet.getLastColumn()).getDisplayValues();
+
+var result = {
+  type: 'text',
+  text: 'ไม่พบข้อมูล'
+}
+
+function doPost(e) {
+  var json = JSON.parse(e.postData.contents);
+  var reply_token = json.events[0].replyToken;
+  var message = json.events[0].message.text;
+  var msg = message.split(',')
+  if(msg[0]=='ค้นหา'){
+    var msg1 = msg[1]
+
+  for (var i = 0; i < data.length; i++) 
+  { 
+    if (data[i][0] == msg1) 
+
+      i = i + 2; 
+      var data1 = sheet.getRange(i, 1).getDisplayValue(); //ห้อง
+      var data2 = sheet.getRange(i, 2).getDisplayValue(); //วันที่ย้ายเข้า
+      var data3 = sheet.getRange(i, 3).getDisplayValue(); //ชื่อ
+      var data4 = sheet.getRange(i, 4).getDisplayValue(); //เบอร์โทร
+      var data5 = sheet.getRange(i, 5).getDisplayValue(); //ค่าห้อง
+      var data6 = sheet.getRange(i, 6).getDisplayValue(); //ค่าประกัน
+      var data7 = sheet.getRange(i, 7).getDisplayValue(); //หมายเหตุ
+      var data8 = sheet.getRange(i, 8).getDisplayValue(); //ค่าหอเดือนนี้
+
+      result = 
+ //-------------------------------     
+      {
+  "type": "bubble",
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "text",
+        "text": "ข้อมูลผู้เช่า",
+        "weight": "bold",
+        "color": "#1DB446",
+        "size": "sm"
+      },
+      {
+        "type": "text",
+        "text": data1,
+        "weight": "bold",
+        "size": "xxl",
+        "margin": "md"
+      },
+      {
+        "type": "text",
+        "text": data3,
+        "size": "xl",
+        "color": "#aaaaaa",
+        "wrap": true,
+        "weight": "bold"
+      },
+      {
+        "type": "separator",
+        "margin": "xxl"
+      },
+      {
+        "type": "box",
+        "layout": "vertical",
+        "margin": "xxl",
+        "spacing": "sm",
+        "contents": [
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "contents": [
+              {
+                "type": "text",
+                "text": "วันที่ย้ายเข้า",
+                "size": "sm",
+                "color": "#555555",
+                "flex": 0
+              },
+              {
+                "type": "text",
+                "text": data2,
+                "size": "sm",
+                "color": "#111111",
+                "align": "end"
+              }
+            ]
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "contents": [
+              {
+                "type": "text",
+                "text": "เบอร์โทร",
+                "size": "sm",
+                "color": "#555555",
+                "flex": 0
+              },
+              {
+                "type": "text",
+                "text": data4,
+                "size": "sm",
+                "color": "#111111",
+                "align": "end"
+              }
+            ]
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "contents": [
+              {
+                "type": "text",
+                "text": "ค่าห้อง",
+                "size": "sm",
+                "color": "#555555",
+                "flex": 0
+              },
+              {
+                "type": "text",
+                "text": data5,
+                "size": "sm",
+                "color": "#111111",
+                "align": "end"
+              }
+            ]
+          },
+          {
+            "type": "separator",
+            "margin": "xxl"
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "margin": "xxl",
+            "contents": [
+              {
+                "type": "text",
+                "text": "ค่าประกัน",
+                "size": "sm",
+                "color": "#555555"
+              },
+              {
+                "type": "text",
+                "text": data6,
+                "size": "sm",
+                "color": "#111111",
+                "align": "end"
+              }
+            ]
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "contents": [
+              {
+                "type": "text",
+                "text": "ค่าหอเดือนนี้",
+                "size": "sm",
+                "color": "#555555"
+              },
+              {
+                "type": "text",
+                "text": data8,
+                "size": "sm",
+                "color": "#111111",
+                "align": "end"
+              }
+            ]
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "contents": [
+              {
+                "type": "text",
+                "text": "หมายเหตุ",
+                "size": "sm",
+                "color": "#555555"
+              },
+              {
+                "type": "text",
+                "text": data7,
+                "size": "sm",
+                "color": "#111111",
+                "align": "end"
+              }
+            ]
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "contents": []
+          }
+        ]
+      },
+      {
+        "type": "separator",
+        "margin": "xxl"
+      },
+      {
+        "type": "box",
+        "layout": "horizontal",
+        "margin": "md",
+        "contents": []
+      }
+    ]
+  },
+  "styles": {
+    "footer": {
+      "separator": true
+    }
+  }
+}
+
+
+//-------------------------------
+      result = {
+        'type': 'flex',
+        'altText': 'This is Flex Message',
+        'contents': result
+      }
+      break;
+    };//End if   
+  };//End for
+
+
+  UrlFetchApp.fetch(line_endpoint, {
+    'headers': {
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': 'Bearer ' + CHANNEL_ACCESS_TOKEN,
+    },
+    'method': 'post',
+    'payload': JSON.stringify({
+      'replyToken': reply_token,
+      'messages': [result],
+    }),
+  });
+
+  var replyJSON = ContentService.createTextOutput(JSON.stringify(result)).setMimeType(ContentService.MimeType.JSON);
+  return replyJSON;
+}
